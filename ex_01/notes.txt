@@ -1,0 +1,73 @@
+When we are using PTRACE_PEEKUSER we have to specify the offset of the variable we want in USER area that we want to retrieve.
+In this case, ptrace() will return its value. So, when we want to retrieve the number of the syscall (located at ORIG_EAX), we
+have to specify the offset of the variable orig_eax in USER area.
+
+When the manual of ptrace talks about "USER area" it is refering to the kernel user struct
+Look in the following content from sys/user.h header file
+
+----- /usr/include/i386-linux-gnu/sys/user.h -----
+
+struct user_regs_struct
+{
+  long int ebx;
+  long int ecx;
+  long int edx;
+  long int esi;
+  long int edi;
+  long int ebp;
+  long int eax;
+  long int xds;
+  long int xes;
+  long int xfs;
+  long int xgs;
+  long int orig_eax;
+  long int eip;
+  long int xcs;
+  long int eflags;
+  long int esp;
+  long int xss;
+};
+
+struct user
+{
+  struct user_regs_struct       regs;
+  int                           u_fpvalid;
+  struct user_fpregs_struct     i387;
+  unsigned long int             u_tsize;
+  unsigned long int             u_dsize;
+  unsigned long int             u_ssize;
+  unsigned long int             start_code;
+  unsigned long int             start_stack;
+  long int                      signal;
+  int                           reserved;
+  struct user_regs_struct*      u_ar0;
+  struct user_fpregs_struct*    u_fpstate;
+  unsigned long int             magic;
+  char                          u_comm [32];
+  int                           u_debugreg [8];
+};
+#endif  /* __x86_64__ */
+
+
+Note that the first item of "struct user" is a "struct user_regs_struct"
+All items in user_regs_struct are "long int" variables. In order to retrieve the
+value of eax register, we have to calculate its index since the beggining of struct user.
+
+The orig_eax variable in user_regs_struct is the 11th (starting from 0th).
+Each variable has the size of 4 bytes in this architecture. This could be represented as sizeof(long int)
+So, in order to retrieve the index o orig_eax, we could calculate it as 4 * 11
+
+The header /usr/include/i386-linux-gnu/sys/reg.h defines ORIG_EAX as 11. So this is why we are using
+4 * ORIG_EAX in the source code
+
+
+NOTE
+    ptrace's manual say one more thing about USER area
+    "The offset supplied, and the data returned, might not entirely match with the definition of struct user."
+    I couldn't find a better explanation about "might not entirely match...".
+
+
+
+It is important to remember that this structs may vary depending of the achitecture. Maybe you will not find user_regs_structure in ARM64.
+Maybe you will not be able to retrieve all registers with PTRACE_GETREGS. I haven't tested yet, but maybe you will have to retrieve
+the registers values by PTRACE_PEEKUSER, calculating the right offset of it by the hard way (opening user.h header and looking for what you want)
