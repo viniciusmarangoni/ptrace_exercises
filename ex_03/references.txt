@@ -1,0 +1,8 @@
+man ptrace
+http://www.linuxjournal.com/article/6100?page=0,1
+
+user_regs_struct is available at
+/usr/include/i386-linux-gnu/sys/user.h
+
+If you dont find it, just search for it
+grep -R "user_regs_struct" /usr/include

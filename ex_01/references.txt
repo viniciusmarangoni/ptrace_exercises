@@ -1,0 +1,5 @@
+man ptrace
+man wait
+man execve
+http://www.linuxjournal.com/article/6100
+https://theantway.com/2013/01/notes-for-playing-with-ptrace-on-64-bits-ubuntu-12-10/

@@ -1,0 +1,2 @@
+https://en.wikipedia.org/wiki/ARM_architecture
+http://www.linuxjournal.com/article/6100?page=0,2

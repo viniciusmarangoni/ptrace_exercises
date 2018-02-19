@@ -1,0 +1,15 @@
+PTRACE_PEEKDATA and PTRACE_PEEKTEXT seems to perform the same thing, but let's use PEEKTEXT to dont let this confusing
+
+I recommend you to compare the opcodes printed by the tracer program and gdb. To print the opcodes in gdb, do this:
+    gdb ./tracer -q
+    disas /r _start
+
+
+You will see that there is some differences from the output of tracer and gdb.
+This happens because x86 is CISC. This means that it has a variable instruction length.
+Since we are retrieving the instruction by ptrace, we always will get a long value.
+So, if the instruction has 2 bytes, we will see some garbage. If the instruction has
+more than 4 bytes, we will not see.
+
+In ARM64 this could be very interesting, since it's RISC and has the instruction
+lenght fixed in 32 bits (4 bytes)

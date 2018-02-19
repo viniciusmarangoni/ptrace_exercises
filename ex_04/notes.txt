@@ -1,0 +1,7 @@
+The "tracer" program will fork and exec "hello_world" program.
+The objective of tracer is to ptrace "helo_world" and retrieve the string passed to "write" syscall BEFORE
+the syscall is executed.
+
+It uses PTRACE_PEEKDATA to retrieve the string and there are a lot of tricks to learn here.
+
+The source codes are well commented explaining the possbile confusing lines.

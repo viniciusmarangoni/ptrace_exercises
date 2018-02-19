@@ -1,0 +1,3 @@
+Just copied the ex_04 and added a function to put data in the remote process, reversing the string before print it
+
+Note that even the \n char is being reversed!

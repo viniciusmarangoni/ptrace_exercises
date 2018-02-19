@@ -1,0 +1,5 @@
+In this exercise you will have to start the looper. This program will print "Hello World" every 2 seconds, in
+an infinite loop. Then you can attach the debugger by executing the "tracer" program.
+
+Tracer will attach in remote process and retrieve data about the next instruction. Then you can
+press enter to detach the remote process. 
