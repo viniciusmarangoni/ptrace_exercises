@@ -200,7 +200,7 @@ void put_data(pid_t child_pid, long r_buff_addr, char *l_string, long r_buff_siz
 
     if(j != 0){
         memcpy(data.chars, aux_laddr, j);
-        ptrace(PTRACE_PEEKDATA, child_pid, r_buff_addr + (i * sizeof(long)), data.val);
+        ptrace(PTRACE_POKEDATA, child_pid, r_buff_addr + (i * sizeof(long)), data.val);
     }
 }
 
